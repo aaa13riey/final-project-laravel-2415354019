@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\SubscriptionController;
 
 
 // Service Routes
@@ -28,4 +29,12 @@ Route::patch("customers/{customer}/activate", [
 Route::patch("customers/{customer}/deactivate", [
     CustomerController::class,
     "deactivate",
+]);
+
+// Subscription Routes
+Route::apiResource("subscriptions", SubscriptionController::class);
+
+Route::patch("subscriptions/{subscription}/change-status", [
+    SubscriptionController::class,
+    "changeStatus",
 ]);
