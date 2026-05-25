@@ -37,7 +37,6 @@ class CustomerController extends Controller
         ]);
     }
 
-
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -60,18 +59,8 @@ class CustomerController extends Controller
         ], 201);
     }
 
-    public function show(int $customer): JsonResponse
+    public function show(Customer $customer): JsonResponse
     {
-        $customer = Customer::query()->find($customer);
-
-        if (!$customer) {
-            return response()->json([
-                "success" => false,
-                "message" => "Customer not found",
-                "errors" => [],
-            ], 404);
-        }
-
         return response()->json([
             "success" => true,
             "message" => "Customer retrieved successfully",
@@ -79,18 +68,8 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $customer): JsonResponse
+    public function update(Request $request, Customer $customer): JsonResponse
     {
-        $customer = Customer::query()->find($customer);
-
-        if (!$customer) {
-            return response()->json([
-                "success" => false,
-                "message" => "Customer not found",
-                "errors" => [],
-            ], 404);
-        }
-
         $data = $request->validate([
             "customer_id" => ["sometimes", "string", "unique:customers,customer_id," . $customer->id],
             "name" => ["sometimes", "string"],
@@ -109,18 +88,8 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function destroy(int $customer): JsonResponse
+    public function destroy(Customer $customer): JsonResponse
     {
-        $customer = Customer::query()->find($customer);
-
-        if (!$customer) {
-            return response()->json([
-                "success" => false,
-                "message" => "Customer not found",
-                "errors" => [],
-            ], 404);
-        }
-
         if ($customer->subscriptions()->exists()) {
             return response()->json([
                 "success" => false,
@@ -138,18 +107,8 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function activate(int $customer): JsonResponse
+    public function activate(Customer $customer): JsonResponse
     {
-        $customer = Customer::query()->find($customer);
-
-        if (!$customer) {
-            return response()->json([
-                "success" => false,
-                "message" => "Customer not found",
-                "errors" => [],
-            ], 404);
-        }
-
         $customer->update(["status" => true]);
 
         return response()->json([
@@ -159,18 +118,8 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function deactivate(int $customer): JsonResponse
+    public function deactivate(Customer $customer): JsonResponse
     {
-        $customer = Customer::query()->find($customer);
-
-        if (!$customer) {
-            return response()->json([
-                "success" => false,
-                "message" => "Customer not found",
-                "errors" => [],
-            ], 404);
-        }
-
         $customer->update(["status" => false]);
 
         return response()->json([
